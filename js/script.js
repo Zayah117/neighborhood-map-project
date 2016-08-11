@@ -4,6 +4,7 @@ function initMap() {
 		center: {lat: 40.3453136, lng: -86.6668564},
 		zoom: 16
 	});
+	var markers = [];
 
 	var locations = [
 		{name: "Mulberry Health and Retirement", location: {lat: 40.348114, lng: -86.67255899999999}},
@@ -24,5 +25,7 @@ function initMap() {
 			title: current_location.name,
 			id: i
 		});
+
+		markers.push(marker);
 	}
 }
