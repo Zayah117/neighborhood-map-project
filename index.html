@@ -10,6 +10,11 @@
 
 <body>
 	<div id="sidebar">
+		<h1>Locations</h1>
+		<form>
+			Filter Locations:<br>
+			<input type="text" name="filter">
+		</form>
 		<ul data-bind="foreach: locationList">
 			<li data-bind="text: name"></li>
 		</ul>	

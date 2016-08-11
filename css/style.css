@@ -3,6 +3,10 @@ html, body {
 	margin: 0;
 	padding: 0;
 	}
+
+h1, form {
+	padding-left: 20px;
+}
 #sidebar {
 	float: left;
 	width: 300px;
