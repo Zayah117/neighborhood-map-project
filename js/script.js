@@ -39,22 +39,24 @@ function initMap() {
 			content: marker.title
 		});
 
+		function animate(marker) {
+			// Start animation
+			marker.setAnimation(google.maps.Animation.BOUNCE);
+
+			// Stop animation after 1.5 seconds
+			setTimeout(function() {
+				marker.setAnimation(null);
+			}, (1.5 * 1000))
+		}
+
 		// When marker is clicked, display info window with marker info
 		marker.addListener('click', (function(infoWindowCopy) {
 			return function() {
-				// self equals current marker
-				self = this;
-
 				// Open info window
-				infoWindowCopy.open(map, self);
+				infoWindowCopy.open(map, this);
 
 				// Set animation to bounce
-				self.setAnimation(google.maps.Animation.BOUNCE);
-
-				// After 1.5 seconds, stop animation
-				setTimeout(function() {
-					self.setAnimation(null);
-				}, (1.5 * 1000));
+				animate(this);
 			};
 		})(infoWindow));
 
