@@ -24,13 +24,15 @@ function initMap() {
 	var markers = [];
 
 	function animate(marker) {
-		// Start animation
-		marker.setAnimation(google.maps.Animation.BOUNCE);
+		if (marker.getAnimation() == null) {
+			// Start animation
+			marker.setAnimation(google.maps.Animation.BOUNCE);
 
-		// Stop animation after 1.5 seconds
-		setTimeout(function() {
-			marker.setAnimation(null);
-		}, (1.5 * 1000))
+			// Stop animation after 1.5 seconds
+			setTimeout(function() {
+				marker.setAnimation(null);
+			}, (1.5 * 1000));
+		}
 	}
 
 
