@@ -33,6 +33,10 @@ function initMap() {
 			id: i
 		});
 
+		marker.addListener('click', function() {
+			console.log(this.title);
+		});
+
 		markers.push(marker);
 	}
 }
