@@ -23,6 +23,17 @@ function initMap() {
 	// Create marker list
 	var markers = [];
 
+	function animate(marker) {
+		// Start animation
+		marker.setAnimation(google.maps.Animation.BOUNCE);
+
+		// Stop animation after 1.5 seconds
+		setTimeout(function() {
+			marker.setAnimation(null);
+		}, (1.5 * 1000))
+	}
+
+
 	// Add markers to this list taking data from locations
 	for (i in locations) {
 		// Get current location and make marker with data
@@ -38,16 +49,6 @@ function initMap() {
 		var infoWindow = new google.maps.InfoWindow({
 			content: marker.title
 		});
-
-		function animate(marker) {
-			// Start animation
-			marker.setAnimation(google.maps.Animation.BOUNCE);
-
-			// Stop animation after 1.5 seconds
-			setTimeout(function() {
-				marker.setAnimation(null);
-			}, (1.5 * 1000))
-		}
 
 		// When marker is clicked, display info window with marker info
 		marker.addListener('click', (function(infoWindowCopy) {
