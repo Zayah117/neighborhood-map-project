@@ -25,6 +25,7 @@ function initMap() {
 
 	// Add markers to this list taking data from locations
 	for (i in locations) {
+		// Get current location and make marker with data
 		current_location = locations[i];
 		var marker = new google.maps.Marker({
 			position: current_location.location,
@@ -33,9 +34,17 @@ function initMap() {
 			id: i
 		});
 
-		marker.addListener('click', function() {
-			console.log(this.title);
+		// Create info window with content of marker's title
+		var infoWindow = new google.maps.InfoWindow({
+			content: marker.title
 		});
+
+		// When marker is clicked, display info window with marker info
+		marker.addListener('click', (function(infoWindowCopy) {
+			return function() {
+				infoWindowCopy.open(map, this);
+			};
+		})(infoWindow));
 
 		markers.push(marker);
 	}
