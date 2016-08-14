@@ -42,7 +42,19 @@ function initMap() {
 		// When marker is clicked, display info window with marker info
 		marker.addListener('click', (function(infoWindowCopy) {
 			return function() {
-				infoWindowCopy.open(map, this);
+				// self equals current marker
+				self = this;
+
+				// Open info window
+				infoWindowCopy.open(map, self);
+
+				// Set animation to bounce
+				self.setAnimation(google.maps.Animation.BOUNCE);
+
+				// After 1.5 seconds, stop animation
+				setTimeout(function() {
+					self.setAnimation(null);
+				}, (1.5 * 1000));
 			};
 		})(infoWindow));
 
