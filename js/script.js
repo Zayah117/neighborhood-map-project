@@ -77,13 +77,14 @@ var Location = function(data) {
 var ViewModel = function() {
 	var self = this;
 
+	this.filterValue = ko.observable("Hello");
+
+	// handles the locations on left side of screen
 	this.locationList = ko.observableArray([]);
 
 	locations.forEach(function(locationItem){
 		self.locationList.push(new Location(locationItem));
 	});
-	console.log(this.locationList())
-
 }
 
 ko.applyBindings(new ViewModel);
