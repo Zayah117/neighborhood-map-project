@@ -77,14 +77,17 @@ var Location = function(data) {
 var ViewModel = function() {
 	var self = this;
 
+	// Links to the filter input
 	this.filterValue = ko.observable("Hello");
 
 	// handles the locations on left side of screen
-	this.locationList = ko.observableArray([]);
-
-	locations.forEach(function(locationItem){
-		self.locationList.push(new Location(locationItem));
-	});
+	this.locationList = ko.computed(function() {
+		var myList = []
+		locations.forEach(function(locationItem){
+			myList.push(new Location(locationItem));
+		});
+		return myList;
+	}, this);
 }
 
 ko.applyBindings(new ViewModel);
