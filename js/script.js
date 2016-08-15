@@ -80,10 +80,11 @@ var ViewModel = function() {
 	// Links to the filter input
 	this.filterValue = ko.observable("");
 
-	// handles the locations on left side of screen
+	// Handles the locations on left side of screen
 	this.locationList = ko.computed(function() {
 		var myList = []
 		locations.forEach(function(locationItem){
+			// If the location name includes text from the input add it to the list
 			if (locationItem.name.toLowerCase().includes(self.filterValue().toLowerCase())) {
 				myList.push(new Location(locationItem));
 			}
