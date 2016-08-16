@@ -13,15 +13,17 @@ var locations = [
 	{name: "Mulberry Telephone", location: {lat: 40.344214, lng: -86.666254}}
 ];
 
+// Create marker list
+var markerList = [];
+
 // Initialize map
 function initMap() {
+	var markers = [];
 	map = new google.maps.Map(document.getElementById('map'), {
 		// Centers to Mulberry IN
 		center: {lat: 40.3453136, lng: -86.6668564},
 		zoom: 16
 	});
-	// Create marker list
-	var markers = [];
 
 	function animate(marker) {
 		if (marker.getAnimation() == null) {
@@ -35,7 +37,6 @@ function initMap() {
 		}
 	}
 
-
 	// Add markers to this list taking data from locations
 	for (i in locations) {
 		// Get current location and make marker with data
@@ -44,7 +45,7 @@ function initMap() {
 			position: current_location.location,
 			map: map,
 			title: current_location.name,
-			id: i
+			id: "marker" + i
 		});
 
 		// Create info window with content of marker's title
@@ -65,7 +66,9 @@ function initMap() {
 
 		markers.push(marker);
 	}
+	markerList = markers;
 }
+
 
 // Data for locations
 var Location = function(data) {
@@ -76,6 +79,9 @@ var Location = function(data) {
 // My ViewModel
 var ViewModel = function() {
 	var self = this;
+
+	// Pass my array of markers into the view model
+	// this.markerList = ko.observableArray(markers);
 
 	// Links to the filter input
 	this.filterValue = ko.observable("");
@@ -89,6 +95,18 @@ var ViewModel = function() {
 				myList.push(new Location(locationItem));
 			}
 		});
+
+		// This handles the markers. I might move this
+		if (markerList.length > 0) {
+			markerList.forEach(function(marker){
+				if (marker.title.toLowerCase().includes(self.filterValue().toLowerCase())) {
+					marker.setMap(map);
+				} else {
+					marker.setMap(null);
+				}
+			});
+		}
+
 		return myList;
 	}, this);
 }
