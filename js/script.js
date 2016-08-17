@@ -13,12 +13,8 @@ var locations = [
 	{name: "Mulberry Telephone", location: {lat: 40.344214, lng: -86.666254}}
 ];
 
-// Create marker list
-var markerList = [];
-
 // Initialize map
 function initMap() {
-	var markers = [];
 	map = new google.maps.Map(document.getElementById('map'), {
 		// Centers to Mulberry IN
 		center: {lat: 40.3453136, lng: -86.6668564},
@@ -64,11 +60,8 @@ function initMap() {
 			};
 		})(infoWindow));
 
-		currentLocation.locationMarker = marker;
-
-		markers.push(marker);
+		currentLocation.marker = marker;
 	}
-	markerList = markers;
 }
 
 
@@ -76,6 +69,7 @@ function initMap() {
 var Location = function(data) {
 	this.name = ko.observable(data.name);
 	this.location = ko.observable(data.location);
+	this.marker = ko.observable(data.marker);
 }
 
 // My ViewModel
@@ -95,19 +89,15 @@ var ViewModel = function() {
 			// If the location name includes text from the input add it to the list
 			if (locationItem.name.toLowerCase().includes(self.filterValue().toLowerCase())) {
 				myList.push(new Location(locationItem));
+				if (locationItem.marker !== undefined) {
+					locationItem.marker.setMap(map);
+				}
+			} else {
+				if (locationItem.marker !== undefined) {
+					locationItem.marker.setMap(null);
+				}
 			}
 		});
-
-		// This handles the markers. I might move this
-		if (markerList.length > 0) {
-			markerList.forEach(function(marker){
-				if (marker.title.toLowerCase().includes(self.filterValue().toLowerCase())) {
-					marker.setMap(map);
-				} else {
-					marker.setMap(null);
-				}
-			});
-		}
 
 		return myList;
 	}, this);
