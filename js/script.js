@@ -40,11 +40,11 @@ function initMap() {
 	// Add markers to this list taking data from locations
 	for (i in locations) {
 		// Get current location and make marker with data
-		current_location = locations[i];
+		currentLocation = locations[i];
 		var marker = new google.maps.Marker({
-			position: current_location.location,
+			position: currentLocation.location,
 			map: map,
-			title: current_location.name,
+			title: currentLocation.name,
 			id: "marker" + i
 		});
 
@@ -63,6 +63,8 @@ function initMap() {
 				animate(this);
 			};
 		})(infoWindow));
+
+		currentLocation.locationMarker = marker;
 
 		markers.push(marker);
 	}
