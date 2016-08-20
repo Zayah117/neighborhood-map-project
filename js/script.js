@@ -61,6 +61,7 @@ function initMap() {
 		})(infoWindow));
 
 		currentLocation.marker = marker;
+		currentLocation.infoWindow = infoWindow;
 	}
 }
 
@@ -70,9 +71,12 @@ var Location = function(data) {
 	this.name = ko.observable(data.name);
 	this.location = ko.observable(data.location);
 	this.marker = ko.observable(data.marker);
+	this.infoWindow = ko.observable(data.infoWindow);
 
 	this.showInfo = function() {
-		console.log(this.name());
+		if (this.infoWindow() !== undefined) {
+			this.infoWindow().open(map, this.marker());
+		}
 	}
 }
 
