@@ -16,7 +16,7 @@
 			<input data-bind="textInput: filterValue, valueUpdate: input">
 		</form>
 		<ul data-bind="foreach: locationList">
-			<li data-bind="text: name"></li>
+			<li data-bind="text: name, click: showInfo"></li>
 		</ul>	
 	</div>
 

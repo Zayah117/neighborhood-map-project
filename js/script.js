@@ -70,6 +70,10 @@ var Location = function(data) {
 	this.name = ko.observable(data.name);
 	this.location = ko.observable(data.location);
 	this.marker = ko.observable(data.marker);
+
+	this.showInfo = function() {
+		console.log(this.name());
+	}
 }
 
 // My ViewModel
