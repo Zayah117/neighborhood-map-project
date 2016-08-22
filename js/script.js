@@ -49,6 +49,10 @@ function initMap() {
 			content: marker.title
 		});
 
+		marker.animate = function() {
+			animate(this);
+		}
+
 		// When marker is clicked, display info window with marker info
 		marker.addListener('click', (function(infoWindowCopy) {
 			return function() {
@@ -56,7 +60,7 @@ function initMap() {
 				infoWindowCopy.open(map, this);
 
 				// Set animation to bounce
-				animate(this);
+				this.animate();
 			};
 		})(infoWindow));
 
@@ -77,6 +81,7 @@ var Location = function(data) {
 	this.showInfo = function() {
 		if (this.infoWindow() !== undefined) {
 			this.infoWindow().open(map, this.marker());
+			this.marker().animate();
 		}
 	}
 }
