@@ -63,6 +63,7 @@ function initMap() {
 		currentLocation.marker = marker;
 		currentLocation.infoWindow = infoWindow;
 	}
+	ko.applyBindings(new ViewModel);
 }
 
 
@@ -110,5 +111,3 @@ var ViewModel = function() {
 		return myList;
 	}, this);
 }
-
-ko.applyBindings(new ViewModel);
