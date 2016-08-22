@@ -79,10 +79,8 @@ var Location = function(data) {
 	this.infoWindow = ko.observable(data.infoWindow);
 
 	this.showInfo = function() {
-		if (this.infoWindow() !== undefined) {
-			this.infoWindow().open(map, this.marker());
-			this.marker().animate();
-		}
+		this.infoWindow().open(map, this.marker());
+		this.marker().animate();
 	}
 }
 
@@ -103,13 +101,9 @@ var ViewModel = function() {
 			// If the location name includes text from the input add it to the list
 			if (locationItem.name.toLowerCase().includes(self.filterValue().toLowerCase())) {
 				myList.push(new Location(locationItem));
-				if (locationItem.marker !== undefined) {
-					locationItem.marker.setMap(map);
-				}
+				locationItem.marker.setMap(map);
 			} else {
-				if (locationItem.marker !== undefined) {
-					locationItem.marker.setMap(null);
-				}
+				locationItem.marker.setMap(null);
 			}
 		});
 
