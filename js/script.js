@@ -68,7 +68,89 @@ function initMap() {
 		currentLocation.infoWindow = infoWindow;
 	}
 	ko.applyBindings(new ViewModel);
+	// getData();
 }
+
+/*
+function getData() {
+	var yelpUrl = 'https://api.yelp.com/v2/search?location=San+Francisco';
+
+	var parameters = {
+		oauth_consumer_key: 'jcxihH9bOq3E-J4DBbcKFA',
+		oauth_token: '97hDLyug92HlKhfUUholXDEr6C4ztNqd',
+		oauth_signature_method: 'hmac-sha1',
+		oauth_version: '2.0',
+		oauth_nonce: (Math.floor(Math.random() * 1e12).toString()),
+		oauth_timestamp: Math.floor(Date.now()/1000),
+		callback: 'cb'
+	};
+
+	// var encodedSignature = oauthSignature.generate('GET',yelpUrl, parameters, 'SxDknbz-0-uyzrhyvyvV6mralX4', 'kLwD7MBstt1lq3zDqkjXkL2GRUo');
+
+	$.ajax({
+		url: yelpUrl,
+		data: parameters,
+		cache: true,
+		dataType: 'jsonp',
+		success: function(results) {
+			console.log(results);
+		},
+		fail: function() {
+			console.log('FAIL');
+		}
+
+
+	});
+
+	timestamp = (Date.now()/100);
+	$.ajax('https://api.yelp.com/v2/search?term=food&location=San+Francisco&oauth_consumer_key=jcxihH9bOq3E-J4DBbcKFA&oauth_token=97hDLyug92HlKhfUUholXDEr6C4ztNqd&oauth_signature_method=hmac-sha1&oauth_signature=kLwD7MBstt1lq3zDqkjXkL2GRUo&oauth_timestamp=' + timestamp + '')
+}
+
+*/
+
+/**
+ * Generates a random number and returns it as a string for OAuthentication
+ * @return {string}
+ */
+function nonce_generate() {
+  return (Math.floor(Math.random() * 1e12).toString());
+}
+
+var YELP_BASE_URL = 'https://api.yelp.com/';
+
+var yelp_url = 'https://api.yelp.com/search?term=food&location=San+Francisco';
+
+    var parameters = {
+      oauth_consumer_key: 'jcxihH9bOq3E-J4DBbcKFA',
+      oauth_token: 'k3ECmwHLEBYjU15k39hcL3l4_NTfwHK0',
+      oauth_nonce: nonce_generate(),
+      oauth_timestamp: Math.floor(Date.now()/1000),
+      oauth_signature_method: 'HMAC-SHA1',
+      oauth_version : '1.0',
+      callback: 'cb'              // This is crucial to include for jsonp implementation in AJAX or else the oauth-signature will be wrong.
+    };
+
+    var encodedSignature = oauthSignature.generate('GET',yelp_url, parameters, 'SxDknbz-0-uyzrhyvyvV6mralX4', 'kLwD7MBstt1lq3zDqkjXkL2GRUo');
+    parameters.oauth_signature = encodedSignature;
+
+    var settings = {
+      url: yelp_url,
+      data: parameters,
+      cache: true,                // This is crucial to include as well to prevent jQuery from adding on a cache-buster parameter "_=23489489749837", invalidating our oauth-signature
+      dataType: 'jsonp',
+      success: function(results) {
+        // Do stuff with results
+        console.log('success!')
+        console.log(results);
+      },
+      error: function(e) {
+        // Do stuff on fail
+        console.log(e);
+      }
+    };
+
+    // Send AJAX query via jQuery library.
+    $.ajax(settings);
 
 
 // Data for locations
