@@ -122,21 +122,29 @@ function getData() {
 	}
 
 	// var YELP_BASE_URL = 'https://api.yelp.com/';
+	var MY_KEY = 'jcxihH9bOq3E-J4DBbcKFA';
+	var SECRET_KEY = 'SxDknbz-0-uyzrhyvyvV6mralX4';
+	var TOKEN = 'XZwiTogSdAxBtWOfcBqxORA9Av2khLut';
+	var SECRET_TOKEN = 'VgRmDeZi__7Cj6-2SNGhkiZpBh8';
 
-	var yelp_url = 'https://api.yelp.com/search?term=food&location=San+Francisco';
+	var yelp_url = 'https://api.yelp.com/v2/search';
+
+	// var yelp_url = 'https://api.yelp.com/v2/search?term=food&location=San+Francisco';
 
 	    var parameters = {
-	      oauth_consumer_key: 'jcxihH9bOq3E-J4DBbcKFA',
-	      oauth_token: 'k3ECmwHLEBYjU15k39hcL3l4_NTfwHK0',
+	      oauth_consumer_key: MY_KEY,
+	      oauth_token: TOKEN,
 	      oauth_nonce: nonce_generate(),
 	      oauth_timestamp: Math.floor(Date.now()/1000),
 	      oauth_signature_method: 'HMAC-SHA1',
 	      oauth_version : '1.0',
 	      limit: 10,
+	      location: 'San Francisco',
+	      term: 'food',
 	      callback: 'cb'              // This is crucial to include for jsonp implementation in AJAX or else the oauth-signature will be wrong.
 	    };
 
-	    var encodedSignature = oauthSignature.generate('GET',yelp_url, parameters, 'SxDknbz-0-uyzrhyvyvV6mralX4', 'kLwD7MBstt1lq3zDqkjXkL2GRUo');
+	    var encodedSignature = oauthSignature.generate('GET',yelp_url, parameters, SECRET_KEY, SECRET_TOKEN);
 	    parameters.oauth_signature = encodedSignature;
 
 	    var settings = {
