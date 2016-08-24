@@ -68,8 +68,10 @@ function initMap() {
 		currentLocation.infoWindow = infoWindow;
 	}
 	ko.applyBindings(new ViewModel);
-	// getData();
+	getData();
 }
+
+// MY OLD CODE
 
 /*
 function getData() {
@@ -108,50 +110,55 @@ function getData() {
 
 */
 
-/**
- * Generates a random number and returns it as a string for OAuthentication
- * @return {string}
- */
-function nonce_generate() {
-  return (Math.floor(Math.random() * 1e12).toString());
+// MarkN's code: https://discussions.udacity.com/t/how-to-make-ajax-request-to-yelp-api/13699/4
+
+function getData() {
+	/**
+	 * Generates a random number and returns it as a string for OAuthentication
+	 * @return {string}
+	 */
+	function nonce_generate() {
+	  return (Math.floor(Math.random() * 1e12).toString());
+	}
+
+	// var YELP_BASE_URL = 'https://api.yelp.com/';
+
+	var yelp_url = 'https://api.yelp.com/search?term=food&location=San+Francisco';
+
+	    var parameters = {
+	      oauth_consumer_key: 'jcxihH9bOq3E-J4DBbcKFA',
+	      oauth_token: 'k3ECmwHLEBYjU15k39hcL3l4_NTfwHK0',
+	      oauth_nonce: nonce_generate(),
+	      oauth_timestamp: Math.floor(Date.now()/1000),
+	      oauth_signature_method: 'HMAC-SHA1',
+	      oauth_version : '1.0',
+	      limit: 10,
+	      callback: 'cb'              // This is crucial to include for jsonp implementation in AJAX or else the oauth-signature will be wrong.
+	    };
+
+	    var encodedSignature = oauthSignature.generate('GET',yelp_url, parameters, 'SxDknbz-0-uyzrhyvyvV6mralX4', 'kLwD7MBstt1lq3zDqkjXkL2GRUo');
+	    parameters.oauth_signature = encodedSignature;
+
+	    var settings = {
+	      url: yelp_url,
+	      data: parameters,
+	      cache: true,                // This is crucial to include as well to prevent jQuery from adding on a cache-buster parameter "_=23489489749837", invalidating our oauth-signature
+	      dataType: 'jsonp',
+	      success: function(results) {
+	        // Do stuff with results
+	        console.log('success!');
+	        console.log(results);
+	      },
+	      error: function(e) {
+	        // Do stuff on fail
+	        console.log('error!');
+	        console.log(e);
+	      }
+	    };
+
+	    // Send AJAX query via jQuery library.
+	    $.ajax(settings);
 }
-
-var YELP_BASE_URL = 'https://api.yelp.com/';
-
-var yelp_url = 'https://api.yelp.com/search?term=food&location=San+Francisco';
-
-    var parameters = {
-      oauth_consumer_key: 'jcxihH9bOq3E-J4DBbcKFA',
-      oauth_token: 'k3ECmwHLEBYjU15k39hcL3l4_NTfwHK0',
-      oauth_nonce: nonce_generate(),
-      oauth_timestamp: Math.floor(Date.now()/1000),
-      oauth_signature_method: 'HMAC-SHA1',
-      oauth_version : '1.0',
-      callback: 'cb'              // This is crucial to include for jsonp implementation in AJAX or else the oauth-signature will be wrong.
-    };
-
-    var encodedSignature = oauthSignature.generate('GET',yelp_url, parameters, 'SxDknbz-0-uyzrhyvyvV6mralX4', 'kLwD7MBstt1lq3zDqkjXkL2GRUo');
-    parameters.oauth_signature = encodedSignature;
-
-    var settings = {
-      url: yelp_url,
-      data: parameters,
-      cache: true,                // This is crucial to include as well to prevent jQuery from adding on a cache-buster parameter "_=23489489749837", invalidating our oauth-signature
-      dataType: 'jsonp',
-      success: function(results) {
-        // Do stuff with results
-        console.log('success!')
-        console.log(results);
-      },
-      error: function(e) {
-        // Do stuff on fail
-        console.log(e);
-      }
-    };
-
-    // Send AJAX query via jQuery library.
-    $.ajax(settings);
-
 
 // Data for locations
 var Location = function(data) {
