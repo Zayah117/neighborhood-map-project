@@ -19,23 +19,19 @@ getData();
 them to the proper location based on name */
 function assignReviews(reviews) {
 	// Loop through all locations and reviews looking for a match
-	for (i in locations) {
-		for (j in reviews) {
-			// If there's a match, add the review to infoWindow
-			if (locations[i].name == reviews[j].name) {
-				locations[i].review = reviews[j].snippet_text;
-				locations[i].reviewUrl = reviews[j].url;
-				locations[i].infoWindow.setContent(locations[i].marker.title + '<br><br>' + '<b>From Yelp.com:</b><br>' + locations[i].review + '<a href="' + locations[i].reviewUrl + '"> full review</a>');
+	locations.forEach(function(location) {
+		reviews.forEach(function(review) {
+			if (location.name == review.name) {
+				location.review = review.snippet_text;
+				location.reviewUrl = review.url;
+				location.infoWindow.setContent(location.marker.title + '<br><br>' + '<b>From Yelp.com:</b><br>' + location.review + '<a href="' + location.reviewUrl + '"> full review</a>');
 			}
-		}
-	}
+		});
 
-	// Let the user know if a location does not have a review
-	for (i in locations) {
-		if (locations[i].review == undefined) {
-			locations[i].infoWindow.setContent(locations[i].marker.title + '<br><br>' + 'No reviews... :(');
+		if (location.review == undefined) {
+			location.infoWindow.setContent(location.marker.title + '<br><br>' + 'No reviews... :(');
 		}
-	}
+	});
 }
 
 // Initialize map
@@ -60,7 +56,7 @@ function initMap() {
 	}
 
 	// Add markers to this list taking data from locations
-	for (i in locations) {
+	for (var i = 0; i < locations.length; i++) {
 		// Get current location and make marker with data
 		currentLocation = locations[i];
 		var marker = new google.maps.Marker({
@@ -130,7 +126,7 @@ function getData() {
 			limit: 10,
 			location: 'Mulberry IN',
 			// term: 'food',
-			callback: 'cb'              // This is crucial to include for jsonp implementation in AJAX or else the oauth-signature will be wrong.
+			callback: 'cb'		// This is crucial to include for jsonp implementation in AJAX or else the oauth-signature will be wrong.
 		};
 
 		var encodedSignature = oauthSignature.generate('GET',yelp_url, parameters, SECRET_KEY, SECRET_TOKEN);
@@ -139,7 +135,7 @@ function getData() {
 		var settings = {
 			url: yelp_url,
 			data: parameters,
-			cache: true,                // This is crucial to include as well to prevent jQuery from adding on a cache-buster parameter "_=23489489749837", invalidating our oauth-signature
+			cache: true,		// This is crucial to include as well to prevent jQuery from adding on a cache-buster parameter "_=23489489749837", invalidating our oauth-signature
 			dataType: 'jsonp',
 			success: function(results) {
 				console.log('success!');
@@ -147,7 +143,7 @@ function getData() {
 
 				var reviews = [];
 
-				for (i in results.businesses) {
+				for (var i = 0; i < results.businesses.length; i++) {
 					if (results.businesses[i].location.city === "Mulberry") {
 						reviews.push(results.businesses[i]);
 					}
