@@ -158,6 +158,9 @@ function getData() {
 			error: function(e) {
 				console.log('error!');
 				console.log(e);
+
+				// Run assignReviews with empty list on fail
+				assignReviews([]);
 			}
 		};
 
