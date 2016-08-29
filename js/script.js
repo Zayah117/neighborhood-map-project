@@ -22,7 +22,8 @@ function assignReviews(reviews) {
 		for (j in reviews) {
 			if (locations[i].name == reviews[j].name) {
 				locations[i].review = reviews[j].snippet_text;
-				locations[i].infoWindow.setContent(locations[i].marker.title + '<br><br>' + locations[i].review);
+				locations[i].reviewUrl = reviews[j].url;
+				locations[i].infoWindow.setContent(locations[i].marker.title + '<br><br>' + locations[i].review + '<a href="' + locations[i].reviewUrl + '"> full review</a>');
 			}
 		}
 	}
