@@ -17,8 +17,19 @@ getData();
 
 myReviews = [];
 
-function assignVariable(variable) {
-	myReviews = variable;
+// locations[i].infoWindow.setContent("Hello World!");
+
+/* Takes the reviews from Yelp data and assigns
+them to the proper location based on name */
+function assignReviews(reviews) {
+	for (i in locations) {
+		for (j in reviews) {
+			if (locations[i].name == reviews[j].name) {
+				locations[i].review = reviews[j].snippet_text;
+				locations[i].infoWindow.setContent(locations[i].marker.title + '<br><br>' + locations[i].review);
+			}
+		}
+	}
 }
 
 // Initialize map
@@ -130,17 +141,7 @@ function getData() {
 					}
 				}
 
-				for (i in reviews) {
-					for (j in locations) {
-						if (reviews[i].name == locations[j].name) {
-							locations[j].review = reviews[i].snippet_text;
-							// locations[j].infoWindow.content += ('\n' + locations[j].review);
-							// console.log(locations[j].infoWindow.content);
-						}
-					}
-				}
-
-				assignVariable(reviews);
+				assignReviews(reviews);
 				ko.applyBindings(new ViewModel);
 			},
 			error: function(e) {
