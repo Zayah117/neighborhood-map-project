@@ -15,10 +15,6 @@ var locations = [
 
 getData();
 
-myReviews = [];
-
-// locations[i].infoWindow.setContent("Hello World!");
-
 /* Takes the reviews from Yelp data and assigns
 them to the proper location based on name */
 function assignReviews(reviews) {
@@ -175,9 +171,6 @@ var ViewModel = function() {
 	console.log('Applying KO bindings');
 
 	var self = this;
-
-	this.reviews = ko.observable(myReviews);
-	console.log(this.reviews());
 
 	// Links to the filter input
 	this.filterValue = ko.observable("");
