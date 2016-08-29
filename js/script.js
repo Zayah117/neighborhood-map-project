@@ -83,28 +83,29 @@ function initMap() {
 		currentLocation.marker = marker;
 		currentLocation.infoWindow = infoWindow;
 	}
+	ko.applyBindings(new ViewModel);
 }
 
 // Inspired by MarkN's code: https://discussions.udacity.com/t/how-to-make-ajax-request-to-yelp-api/13699/4
 
+
+/* Gets review data from yelp then runs
+assignReviews() function passing in the 
+results as a parameter. */
+
 function getData() {
-	/**
-	 * Generates a random number and returns it as a string for OAuthentication
-	 * @return {string}
-	 */
+
+	// Generates a random number and returns it as a string for OAuthentication
 	function nonce_generate() {
 		return (Math.floor(Math.random() * 1e12).toString());
 	}
 
-	// var YELP_BASE_URL = 'https://api.yelp.com/';
 	var MY_KEY = 'jcxihH9bOq3E-J4DBbcKFA';
 	var SECRET_KEY = 'SxDknbz-0-uyzrhyvyvV6mralX4';
 	var TOKEN = 'XZwiTogSdAxBtWOfcBqxORA9Av2khLut';
 	var SECRET_TOKEN = 'VgRmDeZi__7Cj6-2SNGhkiZpBh8';
 
 	var yelp_url = 'https://api.yelp.com/v2/search';
-
-	// var yelp_url = 'https://api.yelp.com/v2/search?term=food&location=San+Francisco';
 
 		var parameters = {
 			oauth_consumer_key: MY_KEY,
@@ -128,10 +129,11 @@ function getData() {
 			cache: true,                // This is crucial to include as well to prevent jQuery from adding on a cache-buster parameter "_=23489489749837", invalidating our oauth-signature
 			dataType: 'jsonp',
 			success: function(results) {
-				var reviews = [];
-				// Do stuff with results
 				console.log('success!');
 				console.log(results);
+
+				var reviews = [];
+
 				for (i in results.businesses) {
 					if (results.businesses[i].location.city === "Mulberry") {
 						reviews.push(results.businesses[i]);
@@ -139,10 +141,8 @@ function getData() {
 				}
 
 				assignReviews(reviews);
-				ko.applyBindings(new ViewModel);
 			},
 			error: function(e) {
-				// Do stuff on fail
 				console.log('error!');
 				console.log(e);
 			}
