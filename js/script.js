@@ -28,6 +28,7 @@ function assignReviews(reviews) {
 			}
 		});
 
+		// If the location does not have a review, let the user know
 		if (location.review == undefined) {
 			location.infoWindow.setContent(location.marker.title + '<br><br>' + 'No reviews... :(');
 		}
