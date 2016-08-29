@@ -13,6 +13,14 @@ var locations = [
 	{name: "Mulberry Telephone", location: {lat: 40.344214, lng: -86.666254}}
 ];
 
+getData();
+
+myReviews = [];
+
+function assignVariable(variable) {
+	myReviews = variable;
+}
+
 // Initialize map
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
@@ -67,8 +75,6 @@ function initMap() {
 		currentLocation.marker = marker;
 		currentLocation.infoWindow = infoWindow;
 	}
-	var myReviews = getData();
-	ko.applyBindings(new ViewModel);
 }
 
 // Inspired by MarkN's code: https://discussions.udacity.com/t/how-to-make-ajax-request-to-yelp-api/13699/4
@@ -123,7 +129,19 @@ function getData() {
 						reviews.push(results.businesses[i]);
 					}
 				}
-				return reviews;
+
+				for (i in reviews) {
+					for (j in locations) {
+						if (reviews[i].name == locations[j].name) {
+							locations[j].review = reviews[i].snippet_text;
+							// locations[j].infoWindow.content += ('\n' + locations[j].review);
+							// console.log(locations[j].infoWindow.content);
+						}
+					}
+				}
+
+				assignVariable(reviews);
+				ko.applyBindings(new ViewModel);
 			},
 			error: function(e) {
 				// Do stuff on fail
@@ -138,6 +156,8 @@ function getData() {
 
 // Data for locations
 var Location = function(data) {
+	// console.log('location bindings');
+
 	this.name = ko.observable(data.name);
 	this.location = ko.observable(data.location);
 	this.marker = ko.observable(data.marker);
@@ -151,7 +171,12 @@ var Location = function(data) {
 
 // My ViewModel
 var ViewModel = function() {
+	console.log('Applying KO bindings');
+
 	var self = this;
+
+	this.reviews = ko.observable(myReviews);
+	console.log(this.reviews());
 
 	// Links to the filter input
 	this.filterValue = ko.observable("");
