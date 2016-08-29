@@ -18,13 +18,22 @@ getData();
 /* Takes the reviews from Yelp data and assigns
 them to the proper location based on name */
 function assignReviews(reviews) {
+	// Loop through all locations and reviews looking for a match
 	for (i in locations) {
 		for (j in reviews) {
+			// If there's a match, add the review to infoWindow
 			if (locations[i].name == reviews[j].name) {
 				locations[i].review = reviews[j].snippet_text;
 				locations[i].reviewUrl = reviews[j].url;
 				locations[i].infoWindow.setContent(locations[i].marker.title + '<br><br>' + locations[i].review + '<a href="' + locations[i].reviewUrl + '"> full review</a>');
 			}
+		}
+	}
+
+	// Let the user know if a location does not have a review
+	for (i in locations) {
+		if (locations[i].review == undefined) {
+			locations[i].infoWindow.setContent(locations[i].marker.title + '<br><br>' + 'No reviews... :(');
 		}
 	}
 }
