@@ -1,5 +1,4 @@
 // Declare map and location variables
-
 var map;
 var locations = [
 	{name: "Mulberry Health and Retirement", location: {lat: 40.348114, lng: -86.67255899999999}},
@@ -13,6 +12,7 @@ var locations = [
 	{name: "Mulberry Telephone", location: {lat: 40.344214, lng: -86.666254}}
 ];
 
+// Get data from Yelp
 getData();
 
 /* Takes the reviews from Yelp data and assigns
@@ -37,6 +37,7 @@ function initMap() {
 		zoom: 16
 	});
 
+	// Animate function for markers
 	function animate(marker) {
 		if (marker.getAnimation() == null) {
 			// Start animation
@@ -65,6 +66,7 @@ function initMap() {
 			content: marker.title
 		});
 
+		// Add animate function to marker
 		marker.animate = function() {
 			animate(this);
 		}
@@ -80,9 +82,12 @@ function initMap() {
 			};
 		})(infoWindow));
 
+		// Add marker and infoWindow as objects to the location
 		currentLocation.marker = marker;
 		currentLocation.infoWindow = infoWindow;
 	}
+
+	// Apply ko bindings after map loads
 	ko.applyBindings(new ViewModel);
 }
 
@@ -92,7 +97,6 @@ function initMap() {
 /* Gets review data from yelp then runs
 assignReviews() function passing in the 
 results as a parameter. */
-
 function getData() {
 
 	// Generates a random number and returns it as a string for OAuthentication
@@ -154,8 +158,6 @@ function getData() {
 
 // Data for locations
 var Location = function(data) {
-	// console.log('location bindings');
-
 	this.name = ko.observable(data.name);
 	this.location = ko.observable(data.location);
 	this.marker = ko.observable(data.marker);
