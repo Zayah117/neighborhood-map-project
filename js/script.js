@@ -25,7 +25,7 @@ function assignReviews(reviews) {
 			if (locations[i].name == reviews[j].name) {
 				locations[i].review = reviews[j].snippet_text;
 				locations[i].reviewUrl = reviews[j].url;
-				locations[i].infoWindow.setContent(locations[i].marker.title + '<br><br>' + locations[i].review + '<a href="' + locations[i].reviewUrl + '"> full review</a>');
+				locations[i].infoWindow.setContent(locations[i].marker.title + '<br><br>' + '<b>From Yelp.com:</b><br>' + locations[i].review + '<a href="' + locations[i].reviewUrl + '"> full review</a>');
 			}
 		}
 	}
