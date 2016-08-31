@@ -45,14 +45,14 @@ function initMap() {
 
 	// Animate function for markers
 	function animate(marker) {
-		if (marker.getAnimation() === null) {
+		if (marker.getAnimation() == null) {
 			// Start animation
 			marker.setAnimation(google.maps.Animation.BOUNCE);
 
 			// Stop animation after 1.5 seconds
 			setTimeout(function() {
 				marker.setAnimation(null);
-			}, (1.5 * 1000));
+			}, (1.5 * 1400));
 		}
 	}
 
