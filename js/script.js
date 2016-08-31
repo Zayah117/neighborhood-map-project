@@ -14,8 +14,6 @@ var locations = [
 	{name: "Mulberry Telephone", location: {lat: 40.344214, lng: -86.666254}}
 ];
 
-// Get data from Yelp
-getData();
 
 /* Takes the reviews from Yelp data and assigns
 them to the proper location based on name */
@@ -97,6 +95,9 @@ function initMap() {
 
 	// Apply ko bindings after map loads
 	ko.applyBindings(new ViewModel());
+
+	// Get data from Yelp after map loads
+	getData();
 }
 
 // getData() function inspired by MarkN's code: https://discussions.udacity.com/t/how-to-make-ajax-request-to-yelp-api/13699/5
