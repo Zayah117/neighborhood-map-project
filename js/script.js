@@ -29,7 +29,7 @@ function assignReviews(reviews) {
 		});
 
 		// If the location does not have a review, let the user know
-		if (location.review == undefined) {
+		if (location.review === undefined) {
 			location.infoWindow.setContent(location.marker.title + '<br><br>' + 'No reviews... :(');
 		}
 	});
@@ -45,7 +45,7 @@ function initMap() {
 
 	// Animate function for markers
 	function animate(marker) {
-		if (marker.getAnimation() == null) {
+		if (marker.getAnimation() === null) {
 			// Start animation
 			marker.setAnimation(google.maps.Animation.BOUNCE);
 
@@ -75,7 +75,7 @@ function initMap() {
 		// Add animate function to marker
 		marker.animate = function() {
 			animate(this);
-		}
+		};
 
 		// When marker is clicked, display info window with marker info
 		marker.addListener('click', (function(infoWindowCopy) {
@@ -94,21 +94,16 @@ function initMap() {
 	}
 
 	// Apply ko bindings after map loads
-	ko.applyBindings(new ViewModel);
+	ko.applyBindings(new ViewModel());
 }
 
-// Inspired by MarkN's code: https://discussions.udacity.com/t/how-to-make-ajax-request-to-yelp-api/13699/4
+// getData() function inspired by MarkN's code: https://discussions.udacity.com/t/how-to-make-ajax-request-to-yelp-api/13699/5
 
 
 /* Gets review data from yelp then runs
 assignReviews() function passing in the 
 results as a parameter. */
 function getData() {
-
-	// Generates a random number and returns it as a string for OAuthentication
-	function nonce_generate() {
-		return (Math.floor(Math.random() * 1e12).toString());
-	}
 
 	var MY_KEY = 'jcxihH9bOq3E-J4DBbcKFA';
 	var SECRET_KEY = 'SxDknbz-0-uyzrhyvyvV6mralX4';
@@ -117,26 +112,27 @@ function getData() {
 
 	var yelp_url = 'https://api.yelp.com/v2/search';
 
+		// Parameters and authentication
 		var parameters = {
 			oauth_consumer_key: MY_KEY,
 			oauth_token: TOKEN,
-			oauth_nonce: nonce_generate(),
+			oauth_nonce: Math.floor(Math.random() * 1e12).toString(),
 			oauth_timestamp: Math.floor(Date.now()/1000),
 			oauth_signature_method: 'HMAC-SHA1',
 			oauth_version : '1.0',
 			limit: 10,
 			location: 'Mulberry IN',
 			// term: 'food',
-			callback: 'cb'		// This is crucial to include for jsonp implementation in AJAX or else the oauth-signature will be wrong.
+			callback: 'cb'
 		};
-
 		var encodedSignature = oauthSignature.generate('GET',yelp_url, parameters, SECRET_KEY, SECRET_TOKEN);
 		parameters.oauth_signature = encodedSignature;
 
+		// Settings for AJAX reqeust
 		var settings = {
 			url: yelp_url,
 			data: parameters,
-			cache: true,		// This is crucial to include as well to prevent jQuery from adding on a cache-buster parameter "_=23489489749837", invalidating our oauth-signature
+			cache: true,
 			dataType: 'jsonp',
 			success: function(results) {
 				console.log('success!');
@@ -144,12 +140,14 @@ function getData() {
 
 				var reviews = [];
 
+				// Get reviews and push them to list
 				for (var i = 0; i < results.businesses.length; i++) {
 					if (results.businesses[i].location.city === "Mulberry") {
 						reviews.push(results.businesses[i]);
 					}
 				}
 
+				// Assign reviews to locations
 				assignReviews(reviews);
 			},
 			error: function(e) {
@@ -161,7 +159,7 @@ function getData() {
 			}
 		};
 
-		// Send AJAX query via jQuery library.
+		// Run AJAX request with settings
 		$.ajax(settings);
 }
 
@@ -175,8 +173,8 @@ var Location = function(data) {
 	this.showInfo = function() {
 		this.infoWindow().open(map, this.marker());
 		this.marker().animate();
-	}
-}
+	};
+};
 
 // My ViewModel
 var ViewModel = function() {
@@ -189,7 +187,7 @@ var ViewModel = function() {
 
 	// Handles the locations on left side of screen
 	this.locationList = ko.computed(function() {
-		var myList = []
+		var myList = [];
 		locations.forEach(function(locationItem){
 			// If the location name includes text from the input add it to the list
 			if (locationItem.name.toLowerCase().includes(self.filterValue().toLowerCase())) {
@@ -202,4 +200,4 @@ var ViewModel = function() {
 
 		return myList;
 	}, this);
-}
+};
