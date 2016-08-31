@@ -1,3 +1,5 @@
+'use strict';
+
 // Declare map and location variables
 var map;
 var locations = [
@@ -59,7 +61,7 @@ function initMap() {
 	// Add markers to this list taking data from locations
 	for (var i = 0; i < locations.length; i++) {
 		// Get current location and make marker with data
-		currentLocation = locations[i];
+		var currentLocation = locations[i];
 		var marker = new google.maps.Marker({
 			position: currentLocation.location,
 			map: map,
