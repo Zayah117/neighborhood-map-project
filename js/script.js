@@ -24,16 +24,20 @@ function assignReviews(reviews) {
 			if (location.name == review.name) {
 				location.review = review.snippet_text;
 				location.reviewUrl = review.url;
-				location.infoWindow.setContent(location.marker.title + '<br><br>' + '<b>From Yelp.com:</b><br>' + location.review + '<a href="' + location.reviewUrl + '"> full review</a>');
+				// location.infoWindow.setContent(location.marker.title + '<br><br>' + '<b>From Yelp.com:</b><br>' + location.review + '<a href="' + location.reviewUrl + '"> full review</a>');
 			}
 		});
 
+		/*
 		// If the location does not have a review, let the user know
 		if (location.review === undefined) {
 			location.infoWindow.setContent(location.marker.title + '<br><br>' + 'No reviews... :(');
 		}
+		*/
 	});
 }
+
+var infoWindow = null;
 
 // Initialize map
 function initMap() {
@@ -42,6 +46,19 @@ function initMap() {
 		center: {lat: 40.3453136, lng: -86.6668564},
 		zoom: 16
 	});
+
+	// Change global info window
+	infoWindow = new google.maps.InfoWindow({
+		content: null
+	});
+
+	infoWindow.changeContent = function(location) {
+		if (location.review !== undefined) {
+			this.setContent(location.marker.title + '<br><br>' + '<b>From Yelp.com:</b><br>' + location.review + '<a href="' + location.reviewUrl + '"> full review</a>');
+		} else {
+			this.setContent(location.marker.title + '<br><br>' + 'No reviews... :(');
+		}
+	}
 
 	// Animate function for markers
 	function animate(marker) {
@@ -67,26 +84,24 @@ function initMap() {
 			id: "marker" + i
 		});
 
-		// Create info window with content of marker's title
-		var infoWindow = new google.maps.InfoWindow({
-			content: marker.title
-		});
-
 		// Add animate function to marker
 		marker.animate = function() {
 			animate(this);
 		};
 
 		// When marker is clicked, display info window with marker info
-		marker.addListener('click', (function(infoWindowCopy) {
+		marker.addListener('click', (function(infoWindowCopy, currentLocationCopy) {
 			return function() {
+				// Change content of infoWindow
+				infoWindow.changeContent(currentLocationCopy);
+
 				// Open info window
 				infoWindowCopy.open(map, this);
 
 				// Set animation to bounce
 				this.animate();
 			};
-		})(infoWindow));
+		})(infoWindow, currentLocation));
 
 		// Add marker and infoWindow as objects to the location
 		currentLocation.marker = marker;
@@ -174,7 +189,8 @@ var Location = function(data) {
 	this.infoWindow = ko.observable(data.infoWindow);
 
 	this.showInfo = function() {
-		this.infoWindow().open(map, this.marker());
+		infoWindow.changeContent(data);
+		infoWindow.open(map, this.marker());
 		this.marker().animate();
 	};
 };
