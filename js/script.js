@@ -205,14 +205,12 @@ var ViewModel = function() {
 	this.locationList = ko.computed(function() {
 		var myList = [];
 		locations.forEach(function(locationItem){
-			locationItem.marker.setMap(map);
-
 			// If the location name includes text from the input add it to the list
 			if (locationItem.name.toLowerCase().includes(self.filterValue().toLowerCase())) {
 				myList.push(new Location(locationItem));
-				locationItem.marker.setVisible(true);
+				locationItem.marker.setMap(map);
 			} else {
-				locationItem.marker.setVisible(false);
+				locationItem.marker.setMap(null);
 			}
 		});
 
