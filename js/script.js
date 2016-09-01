@@ -183,15 +183,12 @@ function getData() {
 
 // Data for locations
 var Location = function(data) {
-	this.name = ko.observable(data.name);
-	this.location = ko.observable(data.location);
-	this.marker = ko.observable(data.marker);
-	this.infoWindow = ko.observable(data.infoWindow);
+	this.name = data.name;
 
 	this.showInfo = function() {
 		infoWindow.changeContent(data);
 		infoWindow.open(map, this.marker());
-		this.marker().animate();
+		data.marker.animate();
 	};
 };
 
