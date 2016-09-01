@@ -187,7 +187,7 @@ var Location = function(data) {
 
 	this.showInfo = function() {
 		infoWindow.changeContent(data);
-		infoWindow.open(map, this.marker());
+		infoWindow.open(map, data.marker);
 		data.marker.animate();
 	};
 };
