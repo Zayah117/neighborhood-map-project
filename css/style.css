@@ -1,20 +1,27 @@
-html, body {
+html, 
+body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	}
+}
 
-h1, form {
+
+h1, 
+form {
 	padding-left: 20px;
 }
+
+
 #sidebar {
 	float: left;
 	min-width: 300px;
 }
 
+
 #map {
 	height: 100%;
 }
+
 
 @media only screen and (max-width: 768px) {
 	#sidebar {
