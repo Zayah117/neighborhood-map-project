@@ -9,7 +9,7 @@
 </head>
 
 <body>
-	<div id="sidebar">
+	<aside id="sidebar">
 		<h1>Locations</h1>
 		<form>
 			Filter Locations:<br>
@@ -18,7 +18,7 @@
 		<ul data-bind="foreach: locationList">
 			<li data-bind="text: name, click: showInfo"></li>
 		</ul>	
-	</div>
+	</aside>
 
 	<div id="map"></div>
 	<script src="js/lib/jquery-3.1.0.min.js"></script>
