@@ -115,6 +115,10 @@ function initMap() {
 	getData();
 }
 
+function mapError() {
+	console.log("MAP ERROR");
+}
+
 // getData() function inspired by MarkN's code: https://discussions.udacity.com/t/how-to-make-ajax-request-to-yelp-api/13699/5
 
 
