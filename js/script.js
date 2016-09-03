@@ -130,7 +130,8 @@ function initMap() {
 }
 
 function mapError() {
-	console.log("MAP ERROR");
+	console.log('MAP ERROR');
+	$('#map').append('<h2 class="error">GOOGLE MAPS UNAVAILABLE</h2>');
 }
 
 // getData() function inspired by MarkN's code: https://discussions.udacity.com/t/how-to-make-ajax-request-to-yelp-api/13699/5

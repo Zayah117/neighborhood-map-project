@@ -22,6 +22,12 @@ form {
 	height: 100%;
 }
 
+.error {
+	color: red;
+	text-align: center;
+	line-height: 100px;
+	font-family: Arial, Helvetica, sans-serif;
+}
 
 @media only screen and (max-width: 768px) {
 	#sidebar {
