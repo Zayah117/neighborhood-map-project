@@ -66,12 +66,6 @@ function initMap() {
 
 	infoWindow.changeContent = function(location) {
 		this.setContent(location.reviewString);
-		/*
-		if (location.review !== undefined) {
-			this.setContent(location.marker.title + '<br><br>' + '<b>From Yelp.com:</b><br>' + location.review + '<a href="' + location.reviewUrl + '"> full review</a>');
-		} else {
-			this.setContent(location.marker.title + '<br><br>' + 'No reviews... :(');
-		}*/
 	}
 
 	// Animate function for markers
