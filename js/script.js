@@ -17,24 +17,28 @@ var locations = [
 
 /* Takes the reviews from Yelp data and assigns
 them to the proper location based on name */
-function assignReviews(reviews) {
+function assignReviews(reviews, apiSuccess) {
 	// Loop through all locations and reviews looking for a match
-	locations.forEach(function(location) {
-		reviews.forEach(function(review) {
-			if (location.name == review.name) {
-				location.review = review.snippet_text;
-				location.reviewUrl = review.url;
-				// location.infoWindow.setContent(location.marker.title + '<br><br>' + '<b>From Yelp.com:</b><br>' + location.review + '<a href="' + location.reviewUrl + '"> full review</a>');
-			}
+	if (apiSuccess) {
+		locations.forEach(function(location) {
+			reviews.forEach(function(review) {
+				if (location.name == review.name) {
+					console.log(location.name + review.name);
+					location.review = review.snippet_text;
+					location.reviewUrl = review.url;
+					location.reviewString = (location.marker.title + '<br><br>' + '<b>From Yelp.com:</b><br>' + location.review + '<a href="' + location.reviewUrl + '"> full review</a>');
+					break;
+				} else {
+					console.log("else" + location.name);
+					location.reviewString = (location.marker.title + '<br><br>' + 'No reviews from Yelp... :(')
+				}
+			});
 		});
-
-		/*
-		// If the location does not have a review, let the user know
-		if (location.review === undefined) {
-			location.infoWindow.setContent(location.marker.title + '<br><br>' + 'No reviews... :(');
-		}
-		*/
-	});
+	} else {
+		locations.forEach(function(location) {
+			location.reviewString = (location.marker.title + '<br><br>' + 'Yelp reviews unavailable... :(')
+		});
+	}
 }
 
 var infoWindow = null;
@@ -53,11 +57,13 @@ function initMap() {
 	});
 
 	infoWindow.changeContent = function(location) {
+		this.setContent(location.reviewString);
+		/*
 		if (location.review !== undefined) {
 			this.setContent(location.marker.title + '<br><br>' + '<b>From Yelp.com:</b><br>' + location.review + '<a href="' + location.reviewUrl + '"> full review</a>');
 		} else {
 			this.setContent(location.marker.title + '<br><br>' + 'No reviews... :(');
-		}
+		}*/
 	}
 
 	// Animate function for markers
@@ -170,14 +176,14 @@ function getData() {
 				}
 
 				// Assign reviews to locations
-				assignReviews(reviews);
+				assignReviews(reviews, true);
 			},
 			error: function(e) {
 				console.log('error!');
 				console.log(e);
 
 				// Run assignReviews with empty list on fail
-				assignReviews([]);
+				assignReviews([], false);
 			}
 		};
 
