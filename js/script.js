@@ -21,24 +21,32 @@ function assignReviews(reviews, apiSuccess) {
 	// Loop through all locations and reviews looking for a match
 	if (apiSuccess) {
 		locations.forEach(function(location) {
-			reviews.forEach(function(review) {
-				if (location.name == review.name) {
-					console.log(location.name + review.name);
+			var review = hasReview(location, reviews);
+			if (review !== false) {
 					location.review = review.snippet_text;
 					location.reviewUrl = review.url;
-					location.reviewString = (location.marker.title + '<br><br>' + '<b>From Yelp.com:</b><br>' + location.review + '<a href="' + location.reviewUrl + '"> full review</a>');
-					break;
-				} else {
-					console.log("else" + location.name);
-					location.reviewString = (location.marker.title + '<br><br>' + 'No reviews from Yelp... :(')
-				}
-			});
+					location.reviewString = (location.marker.title + '<br><br>' + '<b>From Yelp.com:</b><br>' + location.review + '<a href="' + location.reviewUrl + '"> full review</a>')
+			} else {
+				location.reviewString = (location.marker.title + '<br><br>' + 'No reviews from Yelp... :(')
+			}
 		});
 	} else {
 		locations.forEach(function(location) {
 			location.reviewString = (location.marker.title + '<br><br>' + 'Yelp reviews unavailable... :(')
 		});
 	}
+}
+
+/* If the location has a review, return that review
+otherwise return false */
+function hasReview(location, reviews) {
+	for (var i = 0; i < reviews.length; i++) {
+		var review = reviews[i];
+		if (review.name == location.name) {
+			return review
+		}
+	};
+	return false;
 }
 
 var infoWindow = null;
