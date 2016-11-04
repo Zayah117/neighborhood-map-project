@@ -136,10 +136,10 @@ assignReviews() function passing in the
 results as a parameter. */
 function getData() {
 
-	var MY_KEY = 'jcxihH9bOq3E-J4DBbcKFA';
-	var SECRET_KEY = 'SxDknbz-0-uyzrhyvyvV6mralX4';
-	var TOKEN = 'XZwiTogSdAxBtWOfcBqxORA9Av2khLut';
-	var SECRET_TOKEN = 'VgRmDeZi__7Cj6-2SNGhkiZpBh8';
+	var MY_KEY = 'MY_KEY';
+	var SECRET_KEY = 'SECRET_KEY';
+	var TOKEN = 'TOKEN';
+	var SECRET_TOKEN = 'SECRET_TOKEN';
 
 	var yelp_url = 'https://api.yelp.com/v2/search';
 
